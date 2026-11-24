@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIGAA - Avaliação de Proposta de Extensão</title>
+<style>
+/* Estilo base clássico do SIGAA */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 11px;
+    background-color: #ffffff;
+    color: #222222;
+    margin: 0;
+    padding: 0;
+}
+
+/* Cabeçalho superior institucional SIGAA */
+.sigaa-topo {
+    background: linear-gradient(to bottom, #4a5b94 0%, #374575 100%);
+    color: #ffffff;
+    border-bottom: 3px solid #d99c44;
+    padding: 8px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.sigaa-topo-titulo {
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 0.3px;
+}
+
+.sigaa-topo-titulo span {
+    font-weight: normal;
+    font-size: 11px;
+    color: #dce4f7;
+    margin-left: 6px;
+}
+
+.sigaa-topo-info {
+    font-size: 10px;
+    color: #e2e8f8;
+}
+
+/* Barra de navegação / Breadcrumb */
+.sigaa-breadcrumb {
+    background-color: #eff3fa;
+    border-bottom: 1px solid #c4d2eb;
+    padding: 6px 16px;
+    font-size: 11px;
+    color: #333366;
+}
+
+.sigaa-breadcrumb strong {
+    color: #1f2b52;
+}
+
+/* Container principal */
+.sigaa-container {
+    max-width: 960px;
+    margin: 16px auto 36px;
+    padding: 0 14px;
+}
+
+/* Título da operação */
+.sigaa-h2 {
+    font-size: 14px;
+    color: #333366;
+    border-bottom: 1px solid #c4d2eb;
+    padding-bottom: 5px;
+    margin: 0 0 12px 0;
+    font-weight: bold;
+}
+
+/* Caixa de instruções padrão SIGAA */
+.descricaoOperacao {
+    background-color: #f9fbfd;
+    border: 1px solid #c4d2eb;
+    border-left: 4px solid #404e82;
+    padding: 10px 14px;
+    margin-bottom: 16px;
+    line-height: 1.5;
+    color: #333333;
+    border-radius: 2px;
+}
+
+.descricaoOperacao strong {
+    color: #333366;
+}
+
+/* Tabela padrão SIGAA (formulario) */
+table.formulario {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #6688aa;
+    background-color: #ffffff;
+    margin-bottom: 16px;
+}
+
+table.formulario caption {
+    background: linear-gradient(to bottom, #4c5d96 0%, #3a4878 100%);
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 12px;
+    padding: 6px 10px;
+    text-align: center;
+    border: 1px solid #3a4878;
+    border-bottom: none;
+}
+
+table.formulario thead th {
+    background-color: #c4d2eb;
+    color: #1e2847;
+    font-weight: bold;
+    text-align: left;
+    padding: 6px 8px;
+    border-bottom: 1px solid #8aa0c4;
+    border-right: 1px solid #b0c2e0;
+    font-size: 11px;
+}
+
+table.formulario thead th.col-centro,
+table.formulario tbody td.col-centro {
+    text-align: center;
+}
+
+table.formulario tbody tr.linhaPar {
+    background-color: #f9fbfd;
+}
+
+table.formulario tbody tr.linhaImpar {
+    background-color: #ffffff;
+}
+
+table.formulario tbody tr:hover {
+    background-color: #edf1f8;
+}
+
+table.formulario tbody td {
+    padding: 10px 8px;
+    border-bottom: 1px solid #d9e2f2;
+    border-right: 1px solid #e6ecf7;
+    vertical-align: middle;
+}
+
+table.formulario tbody td:last-child,
+table.formulario thead th:last-child {
+    border-right: none;
+}
+
+/* Textos da pergunta na tabela */
+.pergunta-titulo {
+    font-weight: bold;
+    color: #1f2b52;
+    font-size: 11.5px;
+    margin-bottom: 2px;
+}
+
+.pergunta-subtitulo {
+    display: block;
+    font-size: 10.5px;
+    color: #555555;
+    font-style: italic;
+}
+
+.tag-eliminatorio {
+    display: inline-block;
+    margin-top: 3px;
+    font-size: 10px;
+    font-weight: bold;
+    color: #8a1f11;
+    background-color: #fbe3e4;
+    border: 1px solid #fbc2c4;
+    padding: 1px 5px;
+    border-radius: 2px;
+}
+
+/* Área do slider dentro da célula */
+.range-area {
+    position: relative;
+    padding: 6px 4px 4px;
+    min-width: 210px;
+}
+
+.criterio-range {
+    width: 100%;
+    cursor: pointer;
+    accent-color: #404e82;
+    margin: 0;
+}
+
+.range-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 4px;
+    font-size: 10px;
+    color: #555555;
+}
+
+/* Tooltip flutuante ao arrastar o slider */
+.tooltip-range {
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 100%;
+    transform: translateX(-100%);
+    width: 290px;
+    max-width: 85vw;
+    padding: 10px 12px;
+    border-radius: 4px;
+    background: #232c47;
+    color: #ffffff;
+    font-size: 11px;
+    line-height: 1.45;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.15s;
+    z-index: 100;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    border: 1px solid #4c5d96;
+}
+
+.tooltip-range.visivel {
+    opacity: 1;
+    visibility: visible;
+}
+
+.tooltip-range strong {
+    display: block;
+    color: #ffd479;
+    font-size: 13px;
+    margin-bottom: 4px;
+}
+
+.tooltip-range::after {
+    content: "";
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px 6px 0;
+    border-style: solid;
+    border-color: #232c47 transparent transparent;
+}
+
+/* Exibição da nota na coluna direita */
+.nota-badge {
+    display: inline-block;
+    min-width: 44px;
+    padding: 3px 6px;
+    font-weight: bold;
+    font-size: 12px;
+    color: #1f2b52;
+    background-color: #eff3fa;
+    border: 1px solid #b5c6e3;
+    border-radius: 2px;
+    text-align: center;
+}
+
+.nota-badge.eliminado {
+    color: #8a1f11;
+    background-color: #fbe3e4;
+    border-color: #e89b9e;
+}
+
+/* Linha de resumo / totalizador */
+.resumo-row td {
+    background-color: #e4ebf7 !important;
+    font-weight: bold;
+    color: #1f2b52;
+    border-top: 2px solid #8aa0c4;
+    padding: 8px !important;
+}
+
+.status-aprovado {
+    color: #1d6b2b;
+    font-weight: bold;
+}
+
+.status-eliminado {
+    color: #b31b1b;
+    font-weight: bold;
+}
+
+/* Campo de parecer padrão SIGAA */
+.parecer-area {
+    width: 100%;
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 11px;
+    padding: 6px;
+    border: 1px solid #a5b5d0;
+    border-radius: 2px;
+    resize: vertical;
+    min-height: 75px;
+}
+
+/* Rodapé com botões padrão SIGAA */
+table.formulario tfoot td {
+    background-color: #c8d5ec;
+    text-align: center;
+    padding: 8px;
+    border-top: 1px solid #8aa0c4;
+}
+
+.btn-sigaa {
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    color: #222222;
+    background: linear-gradient(to bottom, #f8f9fc 0%, #dce3f0 100%);
+    border: 1px solid #7c8fb3;
+    border-radius: 2px;
+    padding: 5px 14px;
+    cursor: pointer;
+    margin: 0 4px;
+}
+
+.btn-sigaa:hover {
+    background: linear-gradient(to bottom, #ffffff 0%, #cfd9eb 100%);
+    border-color: #404e82;
+}
+
+.btn-sigaa:active {
+    background: #c4d2eb;
+}
+
+/* Modal de confirmação (substitui alert) */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    padding: 16px;
+}
+
+.modal-overlay.ativo {
+    display: flex;
+}
+
+.modal-sigaa {
+    background: #ffffff;
+    border: 1px solid #404e82;
+    width: 100%;
+    max-width: 440px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.modal-sigaa-header {
+    background: #404e82;
+    color: #ffffff;
+    font-weight: bold;
+    padding: 8px 12px;
+    font-size: 12px;
+}
+
+.modal-sigaa-body {
+    padding: 14px;
+    line-height: 1.5;
+    font-size: 11.5px;
+}
+
+.modal-sigaa-footer {
+    background: #eff3fa;
+    border-top: 1px solid #c4d2eb;
+    padding: 8px 12px;
+    text-align: right;
+}
+
+/* Adaptação responsiva para telas pequenas */
+@media (max-width: 680px) {
+    table.formulario thead {
+        display: none;
+    }
+
+    table.formulario,
+    table.formulario tbody,
+    table.formulario tr,
+    table.formulario td {
+        display: block;
+        width: 100%;
+    }
+
+    table.formulario tbody td {
+        border-right: none;
+        padding: 6px 10px;
+    }
+
+    table.formulario tbody tr {
+        border-bottom: 2px solid #c4d2eb;
+        padding: 6px 0;
+    }
+
+    table.formulario tbody td.col-centro {
+        text-align: left;
+    }
+
+    .range-area {
+        min-width: 0;
+    }
+}
+</style>
+</head>
+<body>
+
+<!-- Cabeçalho Institucional SIGAA -->
+<div class="sigaa-topo">
+    <div class="sigaa-topo-titulo">
+        SIGAA <span>Sistema Integrado de Gestão de Atividades Acadêmicas</span>
+    </div>
+    <div class="sigaa-topo-info">
+        Módulo de Extensão &bull; Avaliação de Propostas
+    </div>
+</div>
+
+<!-- Breadcrumb -->
+<div class="sigaa-breadcrumb">
+    Portal do Avaliador &rsaquo; Extensão &rsaquo; <strong>Avaliar Proposta de Ação de Extensão</strong>
+</div>
+
+<div class="sigaa-container">
+    <h2 class="sigaa-h2">Formulário de Avaliação da Proposta</h2>
+
+    <div class="descricaoOperacao">
+        <strong>Instruções:</strong> Utilize os controles deslizantes abaixo para atribuir a nota de cada item.
+        Pressione e arraste o marcador para visualizar o <strong>descritor oficial de desempenho</strong> correspondente a cada pontuação.
+    </div>
+
+    <form id="formAvaliacao">
+        <table class="formulario">
+            <caption>Itens de Avaliação</caption>
+            <thead>
+                <tr>
+                    <th style="width: 44%;">Item / Critério</th>
+                    <th class="col-centro" style="width: 13%;">Peso / Tipo</th>
+                    <th style="width: 33%;">Atribuição de Nota</th>
+                    <th class="col-centro" style="width: 10%;">Nota</th>
+                </tr>
+            </thead>
+            <tbody id="tabelaCriteriosBody"></tbody>
+            <tbody>
+                <tr class="resumo-row">
+                    <td colspan="2">
+                        Situação Preliminar: <span id="situacaoTexto" class="status-aprovado">Apto para Classificação</span>
+                    </td>
+                    <td style="text-align: right;">Nota Final Ponderada (0,00 a 10,00):</td>
+                    <td class="col-centro">
+                        <span id="notaFinalDisplay" class="nota-badge">10,00</span>
+                    </td>
+                </tr>
+                <tr class="linhaImpar">
+                    <td colspan="4">
+                        <label for="parecerTexto" style="display:block; font-weight:bold; color:#1f2b52; margin-bottom:5px;">
+                            Parecer / Justificativa do Avaliador:
+                        </label>
+                        <textarea id="parecerTexto" name="parecer" class="parecer-area" placeholder="Informe observações, recomendações ou justificativa da avaliação..."></textarea>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4">
+                        <button type="submit" class="btn-sigaa">Confirmar Avaliação</button>
+                        <button type="button" id="btnLimpar" class="btn-sigaa">Restaurar Notas</button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </form>
+</div>
+
+<!-- Modal estilo SIGAA -->
+<div class="modal-overlay" id="modalResumo">
+    <div class="modal-sigaa">
+        <div class="modal-sigaa-header">Confirmação de Avaliação</div>
+        <div class="modal-sigaa-body" id="modalConteudo"></div>
+        <div class="modal-sigaa-footer">
+            <button type="button" class="btn-sigaa" id="btnFecharModal">Fechar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+(() => {
+    // Lista sequencial com os 13 itens numerados
+    const criteriosAvaliacao = [
+        {
+            id: "E1",
+            titulo: "1. Enquadramento e Afinidade Institucional",
+            subtitulo: "Afinidade com o Edital e Resolução CONSUP 61/2016",
+            pesoLabel: "Eliminatório",
+            pesoValor: 0,
+            eliminatorio: true,
+            step: 10,
+            labels: ["0,0 (Não)", "10,0 (Sim)"],
+            descritores: {
+                0: "Não (Eliminado): Não atende aos objetivos do edital ou descaracteriza a ação de extensão. Reprova/Devolve com justificativa.",
+                10: "Sim: A proposta apresenta alinhamento claro aos objetivos do edital e enquadra-se rigorosamente nas tipologias de extensão vigentes no IFSC."
+            }
+        },
+        {
+            id: "E2",
+            titulo: "2. Protagonismo Discente",
+            subtitulo: "Atuação na Tríade Extensionista",
+            pesoLabel: "Eliminatório",
+            pesoValor: 0,
+            eliminatorio: true,
+            step: 2.5,
+            labels: ["0,0", "2,5", "5,0", "7,5", "10,0"],
+            descritores: {
+                0: "Inexistente (Eliminado): Não há caracterização de participação ativa de discentes na proposta.",
+                2.5: "Frágil: Papel discente secundário ou passivo, com pouca relação explícita com sua formação técnica/cidadã.",
+                5: "Parcial: Papel discente caracterizado e relacionado ao curso, porém atua estritamente na fase de execução da proposta.",
+                7.5: "Satisfatório: Papel discente bem caracterizado e relacionado ao curso, atua na organização e execução da proposta.",
+                10: "Pleno: Papel discente protagonista bem caracterizado em todas as etapas (planejamento, organização e execução), com forte relação com seu curso e formação."
+            }
+        },
+        {
+            id: "E3",
+            titulo: "3. Envolvimento da Comunidade Externa",
+            subtitulo: "Caracterização da Demanda e do Público",
+            pesoLabel: "Eliminatório",
+            pesoValor: 0,
+            eliminatorio: true,
+            step: 2.5,
+            labels: ["0,0", "2,5", "5,0", "7,5", "10,0"],
+            descritores: {
+                0: "Inexistente (Eliminado): Não há caracterização de público ou envolvimento da comunidade externa.",
+                2.5: "Frágil: Cita a comunidade externa, mas apresenta fundamentação frágil e sem diagnóstico específico da demanda.",
+                5: "Parcial: Demanda da comunidade fundamentada, porém a comunidade participa apenas passivamente (como recebedora da ação).",
+                7.5: "Satisfatório: Demanda da comunidade bem fundamentada, com participação ativa da comunidade no planejamento e/ou execução.",
+                10: "Pleno: Demanda da comunidade externa fundamentada com dados/documentos, participando ativa e passivamente de forma dialógica durante toda a ação."
+            }
+        },
+        {
+            id: "G11",
+            titulo: "4. Identificação e Origem da Demanda Externa",
+            pesoLabel: "1,0",
+            pesoValor: 1.0,
+            eliminatorio: false,
+            step: 2.5,
+            labels: ["0,0", "2,5", "5,0", "7,5", "10,0"],
+            descritores: {
+                0: "A comunidade externa não é o alvo principal ou a demanda é inexistente na redação.",
+                2.5: "Detectada de forma empírica ou genérica, sem demonstrar conhecimento da realidade local.",
+                5: "Detectada a partir do conhecimento geral da instituição sobre a região, sem diagnóstico detalhado.",
+                7.5: "Detectada pelo IFSC a partir de diagnóstico estruturado do entorno e de suas necessidades específicas.",
+                10: "Demanda gerada, motivada e expressamente solicitada pela comunidade externa."
+            }
+        },
+        {
+            id: "G12",
+            titulo: "5. Objetivos e Exequibilidade",
+            pesoLabel: "1,0",
+            pesoValor: 1.0,
+            eliminatorio: false,
+            step: 2.5,
+            labels: ["0,0", "2,5", "5,0", "7,5", "10,0"],
+            descritores: {
+                0: "O texto não corresponde a objetivos de ação extensionista.",
+                2.5: "Objetivos apresentados de forma incompleta, confusa, genérica ou superdimensionada.",
+                5: "Objetivos compreensíveis, mas com exequibilidade parcialmente limitada em razão do prazo ou complexidade.",
+                7.5: "Objetivos claros e exequíveis, com pequenas imperfeições de mensuração ou redação pontual.",
+                10: "Objetivos geral e específicos são claros, precisos, mensuráveis e plenamente exequíveis no cronograma e recursos previstos."
+            }
+        },
+        {
+            id: "G13",
+            titulo: "6. Articulação com ODS e Direitos Humanos",
+            pesoLabel: "0,5",
+            pesoValor: 0.5,
+            eliminatorio: false,
+            step: 2.5,
+            labels: ["0,0", "2,5", "5,0", "7,5", "10,0"],
+            descritores: {
+                0: "Não apresenta relação com os ODS nem com Direitos Humanos.",
+                2.5: "Apenas cita a numeração dos ODS ou a temática de Direitos Humanos, sem articular com a proposta.",
+                5: "Descreve a relação com os ODS de forma genérica, sem justificativa detalhada do impacto.",
+                7.5: "Descreve relação direta com os ODS e justifica o atendimento, porém sem indicar as metas específicas.",
+                10: "Descreve relação direta com os ODS (Agenda 2030), detalhando as metas específicas atendidas, e/ou foca explicitamente na temática de Direitos Humanos."
+            }
+        },
+        {
+            id: "G21",
+            titulo: "7. Detalhamento Metodológico (Ação Processual)",
+            pesoLabel: "1,5",
+            pesoValor: 1.5,
+            eliminatorio: false,
+            step: 2.5,
+            labels: ["0,0", "2,5", "5,0", "7,5", "10,0"],
+            descritores: {
+                0: "Metodologia confusa, incompleta ou inexistente.",
+                2.5: "Apresenta apenas elementos centrais e genéricos, sem detalhamento de etapas fundamentais ou do cronograma.",
+                5: "Esforça-se para detalhar as etapas, mas apresenta confusão de procedimentos ou indefinição parcial de papéis.",
+                7.5: "Metodologia bem detalhada, com passos claros, apresentando pequenas lacunas que não comprometem a reprodutibilidade.",
+                10: "Metodologia impecável: descreve detalhadamente o que, como, quando, para que e para quem fazer, garantindo possibilidade de replicação."
+            }
+        },
+        {
+            id: "G22",
+            titulo: "8. Dialogicidade e Concepção Compartilhada",
+            pesoLabel: "0,5",
+            pesoValor: 0.5,
+            eliminatorio: false,
+            step: 2.5,
+            labels: ["0,0", "2,5", "5,0", "7,5", "10,0"],
+            descritores: {
+                0: "Ausência total de relação dialógica entre os atores.",
+                2.5: "Pouca dialogicidade, evidenciando uma relação predominantemente unidirecional ou assistencialista.",
+                5: "Relação dialógica identificada apenas durante a fase de execução da atividade.",
+                7.5: "Relação dialógica entre os atores verificada na maioria das fases do projeto.",
+                10: "Envolvimento dialógico e horizontal entre discente-comunidade-servidor verificado na concepção, planejamento e execução."
+            }
+        },
+        {
+            id: "G23",
+            titulo: "9. Estratégia de Divulgação e Acesso do Público Externo",
+            pesoLabel: "0,5",
+            pesoValor: 0.5,
+            eliminatorio: false,
+            step: 2.5,
+            labels: ["0,0", "2,5", "5,0", "7,5", "10,0"],
+            descritores: {
+                0: "Sem previsão de ações de divulgação ou busca de público externo.",
+                2.5: "Falta de clareza nas estratégias de divulgação ou na garantia de acesso público à atividade.",
+                5: "Previsão de divulgação presente, mas com abrangência limitada ou canais pouco eficientes.",
+                7.5: "Ações de divulgação eficientes e adequadas, mas focadas em canais ou públicos específicos.",
+                10: "Ações de divulgação amplas, diversificadas e altamente eficientes para captar o maior público externo possível."
+            }
+        },
+        {
+            id: "G31",
+            titulo: "10. Indissociabilidade Ensino, Pesquisa e Extensão",
+            pesoLabel: "1,5",
+            pesoValor: 1.5,
+            eliminatorio: false,
+            step: 2.5,
+            labels: ["0,0", "2,5", "5,0", "7,5", "10,0"],
+            descritores: {
+                0: "Não descreve a relação de indissociabilidade entre ensino, pesquisa e extensão.",
+                2.5: "Falta relação direta com uma das três áreas (ex.: não articula com a pesquisa ou com o ensino).",
+                5: "Contempla as três áreas, mas com priorização explícita de uma área e vinculação frágil com outra.",
+                7.5: "Contempla o ensino, a pesquisa e a extensão, porém com leve priorização de uma das áreas sobre as demais.",
+                10: "Articula de forma harmônica e explícita os conteúdos do curso discente (ensino), pesquisas prévias/futuras e a prática extensionista."
+            }
+        },
+        {
+            id: "G32",
+            titulo: "11. Atendimento às 5 Diretrizes da Extensão",
+            pesoLabel: "1,5",
+            pesoValor: 1.5,
+            eliminatorio: false,
+            step: 2.5,
+            labels: ["0,0", "2,5", "5,0", "7,5", "10,0"],
+            descritores: {
+                0: "Não atende às diretrizes norteadoras da extensão.",
+                2.5: "Atende a apenas 1 ou 2 diretrizes da extensão de forma superficial.",
+                5: "Atende de forma consistente a 3 das diretrizes institucionais de extensão.",
+                7.5: "Atende de forma consistente a 4 das diretrizes institucionais de extensão.",
+                10: "Apresenta relação direta e consistente com todas as 5 diretrizes: Interdisciplinaridade, Interação Dialógica, Indissociabilidade, Impacto Social e Formação Discente."
+            }
+        },
+        {
+            id: "G41",
+            titulo: "12. Acompanhamento e Avaliação",
+            pesoLabel: "1,0",
+            pesoValor: 1.0,
+            eliminatorio: false,
+            step: 2.5,
+            labels: ["0,0", "2,5", "5,0", "7,5", "10,0"],
+            descritores: {
+                0: "Não descreve mecanismos de acompanhamento nem de avaliação.",
+                2.5: "Apresenta instrumentos de acompanhamento/avaliação, mas exclui o público externo ou a equipe executora do processo.",
+                5: "Apresenta acompanhamento e avaliação das etapas de forma incompleta ou superficial.",
+                7.5: "Apresenta acompanhamento e avaliação de todas as etapas, porém com pequenos detalhamentos a complementar.",
+                10: "Apresenta mecanismos sólidos para acompanhar cada etapa e instrumentos completos para avaliar o processo por parte do público externo e da equipe executora."
+            }
+        },
+        {
+            id: "G42",
+            titulo: "13. Impacto Social e Formativo Esperado",
+            pesoLabel: "1,0",
+            pesoValor: 1.0,
+            eliminatorio: false,
+            step: 2.5,
+            labels: ["0,0", "2,5", "5,0", "7,5", "10,0"],
+            descritores: {
+                0: "Não apresenta resultados nem impactos esperados.",
+                2.5: "Descrição genérica ou rasa dos resultados, sem evidenciar o impacto social ou formativo real.",
+                5: "Descreve os impactos de forma geral, mas sem apresentar indicadores claros para mensurar a transformação.",
+                7.5: "Descreve com clareza os resultados e impactos esperados, contendo indicadores prioritariamente qualitativos.",
+                10: "Apresenta indicadores qualitativos e quantitativos precisos para avaliar a transformação social gerada na comunidade e a evolução acadêmica discente."
+            }
+        }
+    ];
+
+    const tbody = document.getElementById("tabelaCriteriosBody");
+    const notaFinalDisplay = document.getElementById("notaFinalDisplay");
+    const situacaoTexto = document.getElementById("situacaoTexto");
+
+    const controles = [];
+
+    // Calcula a nota final ponderada e verifica critérios eliminatórios
+    function recalcularResumo() {
+        let somaPonderada = 0;
+        let somaPesos = 0;
+        let eliminado = false;
+
+        controles.forEach(({ crit, range }) => {
+            const v = Number(range.value);
+            if (crit.eliminatorio && v === 0) {
+                eliminado = true;
+            }
+            if (!crit.eliminatorio) {
+                somaPonderada += v * crit.pesoValor;
+                somaPesos += crit.pesoValor;
+            }
+        });
+
+        const mediaFinal = somaPesos > 0 ? somaPonderada / somaPesos : 0;
+        notaFinalDisplay.textContent = mediaFinal.toFixed(2).replace(".", ",");
+
+        if (eliminado) {
+            situacaoTexto.textContent = "Eliminado (nota 0,0 em critério eliminatório)";
+            situacaoTexto.className = "status-eliminado";
+            notaFinalDisplay.classList.add("eliminado");
+        } else {
+            situacaoTexto.textContent = "Apto para Classificação";
+            situacaoTexto.className = "status-aprovado";
+            notaFinalDisplay.classList.remove("eliminado");
+        }
+    }
+
+    // Monta as linhas da tabela no estilo SIGAA
+    criteriosAvaliacao.forEach((crit, index) => {
+        const tr = document.createElement("tr");
+        tr.className = index % 2 === 0 ? "linhaPar" : "linhaImpar";
+
+        const labelsHTML = crit.labels.map(lbl => `<span>${lbl}</span>`).join("");
+
+        tr.innerHTML = `
+            <td>
+                <div class="pergunta-titulo">${crit.titulo}</div>
+                ${crit.subtitulo ? `<span class="pergunta-subtitulo">${crit.subtitulo}</span>` : ""}
+                ${crit.eliminatorio ? `<span class="tag-eliminatorio">Critério Eliminatório</span>` : ""}
+            </td>
+            <td class="col-centro">
+                <strong>${crit.pesoLabel}</strong>
+            </td>
+            <td>
+                <div class="range-area">
+                    <input type="range" class="criterio-range" id="range${crit.id}"
+                           min="0" max="10" step="${crit.step}" value="10">
+
+                    <div class="range-labels">
+                        ${labelsHTML}
+                    </div>
+
+                    <div class="tooltip-range" id="tooltip${crit.id}">
+                        <strong id="tooltipNota${crit.id}">10,0</strong>
+                        <span id="tooltipTexto${crit.id}"></span>
+                    </div>
+                </div>
+                <input type="hidden" name="${crit.id}" id="valor${crit.id}" value="10">
+            </td>
+            <td class="col-centro">
+                <span class="nota-badge" id="badgeNota${crit.id}">10,0</span>
+            </td>
+        `;
+
+        tbody.appendChild(tr);
+
+        const range = tr.querySelector(`#range${crit.id}`);
+        const tooltip = tr.querySelector(`#tooltip${crit.id}`);
+        const notaTooltip = tr.querySelector(`#tooltipNota${crit.id}`);
+        const textoTooltip = tr.querySelector(`#tooltipTexto${crit.id}`);
+        const valorHidden = tr.querySelector(`#valor${crit.id}`);
+        const badgeNota = tr.querySelector(`#badgeNota${crit.id}`);
+
+        function atualizar() {
+            const v = Number(range.value);
+            const formatado = v.toFixed(1).replace(".", ",");
+
+            notaTooltip.textContent = formatado;
+            textoTooltip.textContent = crit.descritores[v];
+            valorHidden.value = v;
+            badgeNota.textContent = formatado;
+
+            if (crit.eliminatorio && v === 0) {
+                badgeNota.classList.add("eliminado");
+            } else {
+                badgeNota.classList.remove("eliminado");
+            }
+
+            const percentual = (v / 10) * 100;
+            tooltip.style.left = percentual + "%";
+            tooltip.style.transform =
+                percentual < 20 ? "translateX(0)" :
+                percentual > 80 ? "translateX(-100%)" :
+                "translateX(-50%)";
+
+            recalcularResumo();
+        }
+
+        range.addEventListener("input", atualizar);
+
+        range.addEventListener("pointerdown", () => {
+            atualizar();
+            tooltip.classList.add("visivel");
+        });
+
+        function ocultar() {
+            tooltip.classList.remove("visivel");
+        }
+
+        range.addEventListener("pointerup", ocultar);
+        range.addEventListener("pointercancel", ocultar);
+        range.addEventListener("lostpointercapture", ocultar);
+
+        controles.push({ crit, range, atualizar });
+        atualizar();
+    });
+
+    // Botão Restaurar Notas
+    document.getElementById("btnLimpar").addEventListener("click", () => {
+        controles.forEach(({ range, atualizar }) => {
+            range.value = 10;
+            atualizar();
+        });
+        document.getElementById("parecerTexto").value = "";
+    });
+
+    // Envio do formulário com modal estilo SIGAA
+    const modal = document.getElementById("modalResumo");
+    const modalConteudo = document.getElementById("modalConteudo");
+
+    document.getElementById("formAvaliacao").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const situacao = situacaoTexto.textContent;
+        const notaFinal = notaFinalDisplay.textContent;
+        const parecer = document.getElementById("parecerTexto").value.trim();
+
+        modalConteudo.innerHTML = `
+            <p style="margin-top:0;">Avaliação registrada com sucesso (simulação).</p>
+            <p><strong>Situação:</strong> ${situacao}</p>
+            <p><strong>Nota Final Ponderada:</strong> ${notaFinal}</p>
+            ${parecer ? `<p><strong>Parecer:</strong> ${parecer.replace(/</g, "&lt;")}</p>` : ""}
+        `;
+        modal.classList.add("ativo");
+    });
+
+    document.getElementById("btnFecharModal").addEventListener("click", () => {
+        modal.classList.remove("ativo");
+    });
+})();
+</script>
+</body>
+</html>
